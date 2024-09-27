@@ -41,9 +41,8 @@ body {
 #Vector_2,
 #Intersect_2,
 #Vector {
-  stroke: #E6B6A7;
+  stroke: #e6b6a7;
 }
-
 
 .music-note {
   position: absolute;
@@ -55,7 +54,7 @@ body {
   width: 300px;
   height: auto;
   rotate: -320deg;
-  filter: drop-shadow(0 0 6px #E6B6A7);
+  filter: drop-shadow(0 0 6px #e6b6a7);
 }
 
 .light-1 {
@@ -166,9 +165,38 @@ body {
   opacity: 0.7;
 }
 
-
 .description {
   font-size: 2rem;
   margin-bottom: 5rem;
   width: 90rem;
+}
+
+.phonograph {
+  position: absolute;
+  right: -15rem;
+  top: -15rem;
+  width: 40rem;
+  height: auto;
+  z-index: 1;
+  animation: rotate 10s linear infinite;
+}
+
+.stick {
+  position: absolute;
+  top: 12rem;
+  right: -10rem;
+  width: 15rem;
+  height: auto;
+  z-index: 2;
+  transform: scale(-1, 1);
+  transform: rotate(-80deg);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

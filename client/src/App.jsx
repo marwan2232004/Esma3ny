@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import * as Tone from "tone";
 import "./App.css";
+import Phonograph from "./assets/Group2.svg";
+import Stick from "./assets/Group.svg";
 import { clef, maracas, musicNote, pen } from "./assets/svg";
 import "./Buttons.css";
 import CursorAnimation from "./CursorAnimation";
@@ -84,11 +87,38 @@ function App() {
       }
     }, 800);
   };
+  const [audioContextStarted, setAudioContextStarted] = useState(false);
+
+  const playNote = (note) => {
+    startAudioContext();
+    const sampler = new Tone.Sampler({
+      urls: {
+        A1: "A1.mp3",
+        A2: "A2.mp3",
+      },
+      baseUrl: "https://tonejs.github.io/audio/casio/",
+      onload: () => {
+        sampler.triggerAttackRelease([note], 0.5);
+      },
+    }).toDestination();
+    // sampler.triggerAttackRelease(note, "8n");
+  };
+
+  // Function to start the Tone.js audio context
+  const startAudioContext = async () => {
+    if (!audioContextStarted) {
+      await Tone.start();
+      setAudioContextStarted(true);
+      console.log("Audio Context Started");
+    }
+  };
 
   return (
     <>
       <div className="main">
-        {clef} {musicNote} <div className="light-1"></div>{" "}
+        {clef(playNote)} {musicNote(playNote)} <div className="light-1"></div>{" "}
+        <img src={Phonograph} className="phonograph" alt="Group Icon" />
+        <img src={Stick} className="stick" alt="Group Icon" />
         <div className="light-2"></div>{" "}
         <div className="content">
           <div className="header">

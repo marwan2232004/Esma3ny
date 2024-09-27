@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { clef, musicNote, pen } from "./assets/svg";
+import { clef, maracas, musicNote, pen } from "./assets/svg";
 import "./Buttons.css";
 import CursorAnimation from "./CursorAnimation";
 
@@ -14,9 +14,8 @@ function App() {
   const backwardMove = useRef(false);
 
   const enterAnimation = () => {
+    //? To prevent the animation from running multiple times
     if (forwardMove.current || backwardMove.current) return;
-
-    console.log("enter");
 
     forwardMove.current = true;
 
@@ -25,6 +24,8 @@ function App() {
 
     const penSVG = translationButtonRef.current.children[0];
 
+    //?modify the pen position so that when removing the animation it do not return to original position
+    //?then adding the backward animation
     penSVG.style.left = "-0.5rem";
     penSVG.style.top = "-0.5rem";
     penSVG.style.transform = "scale(-1, 1)";
@@ -43,14 +44,15 @@ function App() {
   };
 
   const leaveAnimation = () => {
+    //? To prevent the animation from running multiple times
     if (forwardMove.current || backwardMove.current) return;
-
-    console.log("leave");
 
     backwardMove.current = true;
 
     const penSVG = translationButtonRef.current.children[0];
 
+    //?modify the pen position so that when removing the animation it do not return to original position
+    //?then adding the backward animation
     penSVG.style.left = "7rem";
     penSVG.style.top = "-0.5rem";
     penSVG.style.transform = "scale(1, 1)";
@@ -98,16 +100,34 @@ function App() {
             <div className="name">أسمعنى</div>
           </div>
 
-          <button
-            onMouseEnter={enterAnimation}
-            onMouseLeave={leaveAnimation}
-            ref={translationButtonRef}
-            className="button translation"
-          >
-            {pen}
-            <span ref={translationButtonTextRef}>{translationText}</span>
-          </button>
-          {/* <button className="button convert">تحويل</button> */}
+          <div className="description">
+            موقع "اسمعني" هو أداة مبتكرة تقوم بتحويل الصوت إلى نص بسهولة وسرعة.
+            يتيح لك الموقع الحصول على النص إما بنفس اللغة التي تم التحدث بها أو
+            ترجمته إلى لغة أخرى، مما يسهل التواصل وتوفير الوقت في الكتابة أو
+            الترجمة.
+          </div>
+
+          <div className="buttons">
+            <div className="button-container">
+              <img className="drum-png" src="./src/assets/drum.png" alt="" />
+              <img
+                className="trumpet-png"
+                src="./src/assets/trumpet.png"
+                alt=""
+              />
+              {maracas}
+              <button className="button speak">تحدث</button>
+            </div>
+            <button
+              onMouseEnter={enterAnimation}
+              onMouseLeave={leaveAnimation}
+              ref={translationButtonRef}
+              className="button translation"
+            >
+              {pen}
+              <span ref={translationButtonTextRef}>{translationText}</span>
+            </button>
+          </div>
         </div>
       </div>
     </>

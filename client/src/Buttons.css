@@ -5,6 +5,13 @@
   font-size: larger;
   position: relative;
   padding: 5px;
+  z-index: 7;
+}
+
+:root {
+  /* greenyellow */
+  --translate-color: greenyellow;
+  --speaking-color: #d5d5d5;
 }
 
 .pen {
@@ -17,25 +24,25 @@
 .translation {
   width: 130px;
   height: 50px;
-  border: 2px solid greenyellow;
+  border: 2px solid var(--translate-color);
   background-color: rgba(180, 255, 4, 0);
-  color: greenyellow;
-  -webkit-box-shadow: 0px 0px 24px -3px greenyellow;
-  -moz-box-shadow: 0px 0px 24px -3px greenyellow;
-  box-shadow: 0px 0px 24px -3px greenyellow;
+  color: var(--translate-color);
+  -webkit-box-shadow: 0px 0px 24px -3px var(--translate-color);
+  -moz-box-shadow: 0px 0px 24px -3px var(--translate-color);
+  box-shadow: 0px 0px 24px -3px var(--translate-color);
   transition: all 0.5s ease-in-out;
 }
 
 .translation:hover {
-    -webkit-box-shadow: 0px 0px 24px 0px greenyellow;
-    -moz-box-shadow: 0px 0px 24px 0px greenyellow;
-    box-shadow: 0px 0px 24px 0px greenyellow;
-}   
+  -webkit-box-shadow: 0px 0px 24px 0px var(--translate-color);
+  -moz-box-shadow: 0px 0px 24px 0px var(--translate-color);
+  box-shadow: 0px 0px 24px 0px var(--translate-color);
+}
 
 .pen svg {
   width: 25px;
   height: auto;
-  fill: rgb(164, 228, 14);
+  fill: var(--translate-color);
 }
 
 .forward-move {
@@ -65,9 +72,92 @@
     top: 0rem;
     transform: scale(1, 1);
   }
-  100% {    
+  100% {
     left: -0.5rem;
     top: -0.5rem;
     transform: scale(-1, 1);
   }
+}
+
+
+.button-container{
+  position: relative;
+  z-index: 10;
+  width: fit-content  ;
+}
+
+.speak {
+  width: 130px;
+  height: 50px;
+  background-color: var(--speaking-color);
+  color: rgb(0, 0, 0);
+  font-size: x-large;
+  -webkit-box-shadow: 0px 0px 24px -3px var(--speaking-color);
+  -moz-box-shadow: 0px 0px 24px -3px var(--speaking-color);
+  box-shadow: 0px 0px 24px -3px var(--speaking-color);
+  transition: all 0.5s ease-in-out;
+  border: none;
+}
+
+.speak:hover {
+  -webkit-box-shadow: 0px 0px 24px 0px var(--speaking-color);
+  -moz-box-shadow: 0px 0px 24px 0px var(--speaking-color);
+  box-shadow: 0px 0px 24px 0px var(--speaking-color);
+}
+
+.maracas {
+  position: absolute;
+  right: -1rem;
+  top: -.9rem;
+  transform: rotate(40deg); 
+  transition: all 0.5s ease-in-out;
+}
+
+.maracas svg {
+  width: 50px;
+  height: auto;
+}
+
+.drum-png{
+  position: absolute;
+  width: 50px;
+  height: auto;
+  top: -1rem;
+  left: 2.3rem;
+  z-index: -1 ;
+  transition: all 0.5s ease-in-out;
+}
+
+.trumpet-png{
+  position: absolute;
+  width: 50px;  
+  height: auto;
+  top: -1rem;
+  left: -.9rem;
+  transform: scale(-1, 1);
+  transition: all 0.5s ease-in-out;
+}
+
+.button-container:hover .maracas{
+  top: -2rem;
+  right: -2rem;
+}
+
+.button-container:hover .drum-png{
+  top: -2.3rem; 
+}
+
+.button-container:hover .trumpet-png{
+  top: -2rem;
+  left: -2rem;
+}
+
+
+.buttons{
+  width: 20rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

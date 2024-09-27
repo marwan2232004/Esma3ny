@@ -94,14 +94,17 @@ body {
 .content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: #ffffff;
   text-align: center;
+  height: 100vh;
+  margin-top: 20rem;
 }
 
 .header {
   position: relative;
+  margin-bottom: 3rem;
 }
 
 .name {
@@ -164,3 +167,8 @@ body {
 }
 
 
+.description {
+  font-size: 2rem;
+  margin-bottom: 5rem;
+  width: 90rem;
+}

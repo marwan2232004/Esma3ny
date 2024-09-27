@@ -15,7 +15,12 @@ function App() {
 
   const enterAnimation = () => {
     //? To prevent the animation from running multiple times
-    if (forwardMove.current || backwardMove.current) return;
+    if (
+      forwardMove.current ||
+      backwardMove.current ||
+      translationText === "Translate"
+    )
+      return;
 
     forwardMove.current = true;
 
@@ -45,7 +50,12 @@ function App() {
 
   const leaveAnimation = () => {
     //? To prevent the animation from running multiple times
-    if (forwardMove.current || backwardMove.current) return;
+    if (
+      forwardMove.current ||
+      backwardMove.current ||
+      translationText === "ترجمه"
+    )
+      return;
 
     backwardMove.current = true;
 

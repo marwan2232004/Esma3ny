@@ -1,0 +1,73 @@
+.button {
+  width: 100px;
+  height: 50px;
+  border-radius: 15px;
+  font-size: larger;
+  position: relative;
+  padding: 5px;
+}
+
+.pen {
+  position: absolute;
+  left: -0.5rem;
+  top: -0.5rem;
+  transform: scale(-1, 1);
+}
+
+.translation {
+  width: 130px;
+  height: 50px;
+  border: 2px solid greenyellow;
+  background-color: rgba(180, 255, 4, 0);
+  color: greenyellow;
+  -webkit-box-shadow: 0px 0px 24px -3px greenyellow;
+  -moz-box-shadow: 0px 0px 24px -3px greenyellow;
+  box-shadow: 0px 0px 24px -3px greenyellow;
+  transition: all 0.5s ease-in-out;
+}
+
+.translation:hover {
+    -webkit-box-shadow: 0px 0px 24px 0px greenyellow;
+    -moz-box-shadow: 0px 0px 24px 0px greenyellow;
+    box-shadow: 0px 0px 24px 0px greenyellow;
+}   
+
+.pen svg {
+  width: 25px;
+  height: auto;
+  fill: rgb(164, 228, 14);
+}
+
+.forward-move {
+  animation: move 1.5s forwards;
+}
+
+@keyframes move {
+  50% {
+    left: 0rem;
+    top: 0rem;
+    transform: scale(-1, 1);
+  }
+  100% {
+    left: 7rem;
+    top: -0.5rem;
+    transform: scale(1, 1);
+  }
+}
+
+.backward-move {
+  animation: backwardMove 1.5s forwards;
+}
+
+@keyframes backwardMove {
+  50% {
+    left: 7rem;
+    top: 0rem;
+    transform: scale(1, 1);
+  }
+  100% {    
+    left: -0.5rem;
+    top: -0.5rem;
+    transform: scale(-1, 1);
+  }
+}

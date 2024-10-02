@@ -11,7 +11,7 @@ from Transformer import *
 ############################################################################################
 
 
-model_path = "D:\\DEPI\\trying ASR\\ASR.pth"
+model_path = "ASR.pth"
 N_ROWS = 50000  # NUMBER OF ROWS TAKEN FROM THE DATA
 MAX_TEXT_LEN = 70
 MAX_SEQ_LEN = 70
@@ -273,7 +273,7 @@ if __name__ == "__main__":
     model = torch.load(model_path, weights_only=False, map_location=device)
     model.eval()
 
-    audio_path = 'D:\\DEPI\\trying ASR\\Test Arabic.mp3'
+    audio_path = 'Test Arabic.mp3'
     processed_audios = []
     mel_spec, duration = preprocess_audio(audio_path)
     processed_audios.append(mel_spec)

@@ -22,8 +22,11 @@ async def translate(txt: str, language: str):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": f"Translate this {txt} into {language} directly without any other words"}
-        ]
+            {
+                "role": "system",
+                "content": f"Translate this {txt} into {language} directly without any other words",
+            }
+        ],
     )
     print(completion.choices[0].message.content)
     return {"response": completion.choices[0].message.content}

@@ -30,7 +30,7 @@ body {
   width: 400px;
   height: auto;
   rotate: 320deg;
-  filter: drop-shadow(0 0 6px #f8d562);
+  filter: drop-shadow(0 0 6px rgb(248, 213, 98));
 }
 .clef path {
   stroke: #ffc041;
@@ -103,7 +103,6 @@ body {
 
 .header {
   position: relative;
-  margin-bottom: 3rem;
 }
 
 .name {

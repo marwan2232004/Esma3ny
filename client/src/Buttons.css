@@ -1,3 +1,13 @@
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  gap: 5rem;
+}
+
 .button {
   width: 100px;
   height: 50px;
@@ -5,13 +15,12 @@
   font-size: larger;
   position: relative;
   padding: 5px;
-  z-index: 7;
 }
 
 :root {
   /* greenyellow */
-  --translate-color: greenyellow;
-  --speaking-color: #d5d5d5;
+  --translate-color: rgb(173, 255, 47);
+  --speaking-color: rgb(213, 213, 213);
 }
 
 .pen {
@@ -25,18 +34,21 @@
   width: 130px;
   height: 50px;
   border: 2px solid var(--translate-color);
+  font-family: "Rakkas", serif;
+  font-weight: 400;
+  font-style: normal;
   background-color: rgba(180, 255, 4, 0);
   color: var(--translate-color);
-  -webkit-box-shadow: 0px 0px 24px -3px var(--translate-color);
-  -moz-box-shadow: 0px 0px 24px -3px var(--translate-color);
-  box-shadow: 0px 0px 24px -3px var(--translate-color);
+  -webkit-box-shadow: 0px 0px 24px -5px var(--translate-color);
+  -moz-box-shadow: 0px 0px 24px -5px var(--translate-color);
+  box-shadow: 0px 0px 24px -5px var(--translate-color);
   transition: all 0.5s ease-in-out;
 }
 
 .translation:hover {
-  -webkit-box-shadow: 0px 0px 24px 0px var(--translate-color);
-  -moz-box-shadow: 0px 0px 24px 0px var(--translate-color);
-  box-shadow: 0px 0px 24px 0px var(--translate-color);
+  -webkit-box-shadow: 0px 0px 24px -2px var(--translate-color);
+  -moz-box-shadow: 0px 0px 24px -2px var(--translate-color);
+  box-shadow: 0px 0px 24px -2px var(--translate-color);
 }
 
 .pen svg {
@@ -79,11 +91,10 @@
   }
 }
 
-
-.button-container{
+.button-container {
   position: relative;
   z-index: 10;
-  width: fit-content  ;
+  width: fit-content;
 }
 
 .speak {
@@ -92,24 +103,27 @@
   background-color: var(--speaking-color);
   color: rgb(0, 0, 0);
   font-size: x-large;
-  -webkit-box-shadow: 0px 0px 24px -3px var(--speaking-color);
-  -moz-box-shadow: 0px 0px 24px -3px var(--speaking-color);
-  box-shadow: 0px 0px 24px -3px var(--speaking-color);
+  font-family: "Rakkas", serif;
+  font-weight: 400;
+  font-style: normal;
+  -webkit-box-shadow: 0px 0px 24px -5px var(--speaking-color);
+  -moz-box-shadow: 0px 0px 24px -5px var(--speaking-color);
+  box-shadow: 0px 0px 24px -5px var(--speaking-color);
   transition: all 0.5s ease-in-out;
   border: none;
 }
 
 .speak:hover {
-  -webkit-box-shadow: 0px 0px 24px 0px var(--speaking-color);
-  -moz-box-shadow: 0px 0px 24px 0px var(--speaking-color);
-  box-shadow: 0px 0px 24px 0px var(--speaking-color);
+  -webkit-box-shadow: 0px 0px 24px -2px var(--speaking-color);
+  -moz-box-shadow: 0px 0px 24px -2px var(--speaking-color);
+  box-shadow: 0px 0px 24px -2px var(--speaking-color);
 }
 
 .maracas {
   position: absolute;
   right: -1rem;
-  top: -.9rem;
-  transform: rotate(40deg); 
+  top: -0.9rem;
+  transform: rotate(40deg);
   transition: all 0.5s ease-in-out;
 }
 
@@ -118,46 +132,316 @@
   height: auto;
 }
 
-.drum-png{
+.drum-png {
   position: absolute;
   width: 50px;
   height: auto;
   top: -1rem;
   left: 2.3rem;
-  z-index: -1 ;
+  z-index: -1;
   transition: all 0.5s ease-in-out;
 }
 
-.trumpet-png{
+.trumpet-png {
   position: absolute;
-  width: 50px;  
+  width: 50px;
   height: auto;
   top: -1rem;
-  left: -.9rem;
+  left: -0.9rem;
   transform: scale(-1, 1);
   transition: all 0.5s ease-in-out;
 }
 
-.button-container:hover .maracas{
+.button-container:hover .maracas {
   top: -2rem;
   right: -2rem;
 }
 
-.button-container:hover .drum-png{
-  top: -2.3rem; 
+.button-container:hover .drum-png {
+  top: -2.3rem;
 }
 
-.button-container:hover .trumpet-png{
+.button-container:hover .trumpet-png {
   top: -2rem;
   left: -2rem;
 }
 
+/* ASR */
 
-.buttons{
-  width: 20rem;
+.asr {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 4rem;
+  gap: 5rem;
 }
+
+.asr .button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(20, 20, 20);
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 4px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+}
+
+.asr .svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.asr .svgIcon path {
+  fill: white;
+}
+
+.asr .button:hover {
+  width: 140px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  background-color: rgb(181, 160, 255);
+  align-items: center;
+}
+
+.asr .button:hover .svgIcon {
+  /* width: 20px; */
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}
+
+.asr .button::before {
+  position: absolute;
+  bottom: -20px;
+  content: "رفع";
+  font-family: "Rakkas", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  /* transition-duration: .3s; */
+  font-size: 0px;
+}
+
+.asr .button:hover::before {
+  font-size: 22px;
+  opacity: 1;
+  bottom: unset;
+  /* transform: translateY(-30px); */
+  transition-duration: 0.3s;
+}
+
+.mic {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(255, 0, 123);
+  border: #ff0073;
+  box-shadow: 0px 0px 24px -5px #ff0073;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 4;
+  transition: all 1s ease;
+}
+
+.mic svg {
+  width: 25px;
+  height: auto;
+  cursor: pointer;
+  transition: all 1s ease;
+}
+
+.mic svg path {
+  width: 25px;
+  height: auto;
+  cursor: pointer;
+  transition: all 1s ease;
+}
+
+.recording {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.circle1 {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+
+  background: rgba(255, 171, 228, 0.25);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(255, 171, 228, 0.125);
+}
+.circle2 {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  background: rgba(255, 171, 228, 0.25);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(255, 171, 228, 0.125);
+}
+
+audio {
+  /* padding: 300px; */
+  margin-bottom: 20px;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: rgb(235, 100, 141);
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: rgb(222, 42, 105);
+  border-radius: 50%;
+}
+
+audio::-webkit-media-controls-current-time-display {
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+audio::-webkit-media-controls-time-remaining-display {
+  color: #333;
+  display: none;
+}
+
+audio::-webkit-media-controls-timeline {
+  border-radius: 40px;
+  background-color: rgb(222, 42, 105);
+}
+
+audio::-webkit-media-controls-volume-slider {
+  background-color: rgb(222, 42, 105);
+  border-radius: 50px;
+  /* padding-left: 10px; */
+  padding-right: 10px;
+}
+
+audio::-webkit-media-controls-mute-button {
+  background-color: rgb(222, 42, 105);
+  border-radius: 50%;
+}
+
+@keyframes pulse3 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse1 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse2 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse3 {
+  animation: pulse3 1.5s infinite ease-in-out;
+  animation-delay: 500ms;
+}
+
+.pulse1 {
+  animation: pulse1 1.5s infinite ease-in-out;
+}
+
+.pulse2 {
+  animation: pulse2 1.5s infinite ease-in-out;
+  animation-delay: 200ms;
+}
+
+.back-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  border: 2px solid;
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.back-button svg , path {
+  cursor: pointer;
+  width: 20px;
+  height: auto;
+}
+
+.group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.asr-back-color {
+  border-color: var(--speaking-color);
+  color: var(--speaking-color);
+}
+
+.asr-back-color path {
+  fill: var(--speaking-color);
+}
+
+.translation-back-color {
+  border-color: var(--translate-color);
+  color: var(--translate-color);
+}
+
+.translation-back-color path {
+  fill: var(--translate-color);
+}
+
+.audio-input{
+  position: absolute;
+  width: 140px;
+  height: 50px;
+  opacity: 0;
+}
+

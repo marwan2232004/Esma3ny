@@ -1,0 +1,86 @@
+.translation-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+  gap: 2rem;
+}
+
+textarea {
+  width: 35rem;
+  height: 10rem;
+  background: transparent; /* Makes the background transparent */
+  color: white; /* Text color */
+  border: 2px solid white; /* White border */
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 1em;
+  resize: none; /* Disable resizing */
+  outline: none; /* Removes default outline */
+  font-family: "SUSE", sans-serif;
+  transition: all 0.3s ease;
+}
+
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.897); /* Change this to the desired color */
+  opacity: 1; /* Ensures the color is fully applied */
+}
+.arabic-section textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 215, 135, 0.911);
+
+  border: 2px solid rgb(255, 233, 180);
+}
+
+.arabic-section:focus-within .arabic-title {
+  color: rgb(255, 233, 180);
+}
+
+.english-section textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 135, 167, 0.911);
+
+  border: 2px solid rgb(255, 180, 198);
+}
+
+.english-section:focus-within .english-title {
+  color: rgb(255, 180, 208);
+}
+
+.english-section textarea::selection {
+  background: rgba(255, 135, 167, 0.782);
+}
+
+.arabic-section textarea::selection {
+    background: rgba(255, 209, 135, 0.782);
+  }
+
+.arabic-section,
+.english-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.arabic-title {
+  font-size: 1.5em;
+  color: white;
+  align-self: self-end;
+  margin-right: 10px;
+}
+
+.english-title {
+  font-size: 1.5em;
+  color: white;
+  align-self: self-start;
+  margin-left: 10px;
+}
+
+
+.hide {
+  display: none;
+}

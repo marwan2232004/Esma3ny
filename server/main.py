@@ -1,3 +1,6 @@
+import sys
+import io
+
 from fastapi import (
     FastAPI,
     File,
@@ -6,14 +9,28 @@ from fastapi import (
 from openai import OpenAI
 import dotenv
 from io import BytesIO
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from pydub import AudioSegment
 
-from utils import solution
+from utils import *
 import tempfile
 import os
 
 dotenv.load_dotenv()
 app = FastAPI()
 client = OpenAI()
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 @app.get("/")
@@ -36,27 +53,37 @@ async def translate(txt: str, language: str):
     return {"response": completion.choices[0].message.content}
 
 
+class TranslationRequest(BaseModel):
+    text: str
+
+
 @app.post("/translate")
-async def translate(txt: str, language: str):
+async def translate(request: TranslationRequest):
+    print(request.text)
+    return {"translation": "hello my bbooooooy"}
 
-    return {"response": ""}
 
-
-@app.post("/predict-audio")
-def upload_audio(file: UploadFile = File(...)):
+@app.post("/audio2text")
+async def upload_audio(file: UploadFile = File(...)):
     # Read the uploaded audio file into memory
-    # contents = await file.read()
+    contents = await file.read()
 
-    # # Create a temporary file and write the audio content to it
-    # with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_file:
-    #     tmp_file.write(contents)
-    #     tmp_file_path = tmp_file.name  # Get the path of the temp file
+    # Get the current working directory
+    current_dir = os.getcwd()
+    print(current_dir, flush=True)
 
-    # try:
-    #     # Pass the path of the saved file to the predict function
-    #     result = predict("D:\\DEPI\\Esma3ny\\server\\Test Arabic.mp3")
-    # finally:
-    #     # Clean up the temporary file after prediction
-    #     os.remove(tmp_file_path)
-    result = solution.predict("D:\\DEPI\\Esma3ny\\server\\Test Arabic.mp3")
-    return {"response": result}
+    # Create a temporary file in the current working directory
+    with tempfile.NamedTemporaryFile(dir=current_dir, delete=False, suffix=".wav") as tmp_file:
+        tmp_file.write(contents)
+        tmp_file_path = tmp_file.name  # Get the path of the temp file
+
+    try:
+        # Pass the path of the saved file to the predict function
+        print(f"Temporary file created at: {tmp_file_path}", flush=True)
+        result = predict(tmp_file_path)
+    finally:
+        # Clean up the temporary file after prediction
+        os.remove(tmp_file_path)
+        print(f"Temporary file deleted: {tmp_file_path}", flush=True)
+
+    return {"text": result}

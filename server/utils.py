@@ -11,7 +11,7 @@ from Transformer import *
 ############################################################################################
 
 
-model_path = "D:\\DEPI\\Esma3ny\\server\\ASR.pth"
+model_path = "./ASR_weights.pth"
 N_ROWS = 50000  # NUMBER OF ROWS TAKEN FROM THE DATA
 MAX_TEXT_LEN = 70
 MAX_SEQ_LEN = 70
@@ -44,18 +44,18 @@ def get_conv_Lout(L_in, conv):
 
 class MMS(nn.Module):
     def __init__(
-        self,
-        vocab_size,
-        d_model=512,
-        nhead=8,
-        num_encoder_layers=6,
-        num_decoder_layers=6,
-        dim_feedforward=2048,
-        batch_first=True,
-        max_encoder_seq_len=100,
-        max_decoder_seq_len=100,
-        n_mels=N_MELS,
-        dropout=0.1,
+            self,
+            vocab_size,
+            d_model=512,
+            nhead=8,
+            num_encoder_layers=6,
+            num_decoder_layers=6,
+            dim_feedforward=2048,
+            batch_first=True,
+            max_encoder_seq_len=100,
+            max_decoder_seq_len=100,
+            n_mels=N_MELS,
+            dropout=0.1,
     ):
         super(MMS, self).__init__()
         self.transformer = Transformer(
@@ -80,13 +80,13 @@ class MMS(nn.Module):
         return get_conv_Lout(get_conv_Lout(L_in, self.conv1), self.conv2)
 
     def forward(
-        self,
-        audio,
-        audio_org_lens,
-        text,
-        encoder_self_attn_mask,
-        decoder_self_attn_mask,
-        decoder_padding_mask,
+            self,
+            audio,
+            audio_org_lens,
+            text,
+            encoder_self_attn_mask,
+            decoder_self_attn_mask,
+            decoder_padding_mask,
     ):
         batch_size = audio.size(0)
 
@@ -102,7 +102,7 @@ class MMS(nn.Module):
         de_positional_encoding = self.de_positional_encoding().to(self.device)
 
         assert (
-            audio.shape[1:] == de_positional_encoding.shape[1:]
+                audio.shape[1:] == de_positional_encoding.shape[1:]
         ), "incorrect audio shape"
 
         audio += de_positional_encoding
@@ -112,7 +112,7 @@ class MMS(nn.Module):
         en_positional_encoding = self.en_positional_encoding().to(self.device)
 
         assert (
-            text.shape[1:] == en_positional_encoding.shape[1:]
+                text.shape[1:] == en_positional_encoding.shape[1:]
         ), "incorrect text shape"
 
         text += en_positional_encoding
@@ -193,12 +193,11 @@ def preprocess_vocab():
 
     vocab_size = len(vocab)
     print(f"Vocabulary size: {vocab_size}")
-    print(vocab)
     return char2idx, idx2char, vocab_size
 
 
 def tokenize_text(
-    text, char2idx, max_len=MAX_TEXT_LEN, start_token=True, end_token=True
+        text, char2idx, max_len=MAX_TEXT_LEN, start_token=True, end_token=True
 ):
     for char in text:
         idx = char2idx.get(char, char2idx["<UNK>"])
@@ -241,7 +240,7 @@ def TextDecoder(sentence, idx2char):
 
 
 def generate_padding_masks(
-    transcription, audio_original_len, conv_func, frames=N_FRAMES
+        transcription, audio_original_len, conv_func, frames=N_FRAMES
 ):
     batch_size, seq_len = transcription.size()
     audio_len = conv_func(frames)
@@ -291,7 +290,7 @@ def Convert(model, audio, org_len, char2idx, idx2char, device):
         audio = torch.stack(audio)
         audio = audio.unsqueeze(0)
         audio = audio.to(device)
-        print("Audio size = ", audio.size())
+
         for i in range(MAX_TEXT_LEN):
 
             transcription_padded = torch.tensor(
@@ -337,75 +336,37 @@ def Convert(model, audio, org_len, char2idx, idx2char, device):
         return transcription
 
 
-# device = get_device()
-# # load model
-# model = torch.load(model_path, weights_only=False, map_location=device)
-# model.eval()
+def predict(audio_file):
+    device = get_device()
 
-
-class solution:
-    def predict(audio_file):
-        device = get_device()
-        # load model
-        model = torch.load(model_path, weights_only=False, map_location=device)
-        model.eval()
-
-        # audio_path = "Test Arabic.mp3"
-        processed_audios = []
-        mel_spec, duration = preprocess_audio(audio_file)
-        processed_audios.append(mel_spec)
-        padded_audios = [
-            (
-                mel_spec.shape[-1],
-                np.pad(
-                    mel_spec,
-                    ((0, 0), (0, N_FRAMES - mel_spec.shape[-1])),
-                    mode="constant",
-                ),
-            )
-            for mel_spec in processed_audios
-        ]
-        # print(padded_audios)
-        print("--")
-        char2idx, idx2char, vocab_size = preprocess_vocab()
-        # print(padded_audios[0][1])
-        print("--")
-        # print(padded_audios[0][0])
-        result = Convert(
-            model, padded_audios[0][1], padded_audios[0][0], char2idx, idx2char, device
+    processed_audios = []
+    mel_spec, duration = preprocess_audio(audio_file)
+    processed_audios.append(mel_spec)
+    padded_audios = [
+        (
+            mel_spec.shape[-1],
+            np.pad(
+                mel_spec,
+                ((0, 0), (0, N_FRAMES - mel_spec.shape[-1])),
+                mode="constant",
+            ),
         )
-        return result
+        for mel_spec in processed_audios
+    ]
 
+    char2idx, idx2char, vocab_size = preprocess_vocab()
 
-# res = predict("D:\\DEPI\\Esma3ny\\server\\Test Arabic.mp3")
-# print(res)
+    # load model
 
-# if __name__ == "__main__":
-#     device = get_device()
-#     # load model
-#     model = torch.load(model_path, weights_only=False, map_location=device)
-#     model.eval()
+    model = MMS(vocab_size=vocab_size, max_decoder_seq_len=math.ceil(N_FRAMES / 2), max_encoder_seq_len=MAX_SEQ_LEN,
+                num_encoder_layers=1, d_model=512, nhead=8, dim_feedforward=2048)
 
-#     audio_path = "Test Arabic.mp3"
-#     processed_audios = []
-#     mel_spec, duration = preprocess_audio(audio_path)
-#     processed_audios.append(mel_spec)
-#     padded_audios = [
-#         (
-#             mel_spec.shape[-1],
-#             np.pad(
-#                 mel_spec, ((0, 0), (0, N_FRAMES - mel_spec.shape[-1])), mode="constant"
-#             ),
-#         )
-#         for mel_spec in processed_audios
-#     ]
-#     # print(padded_audios)
-#     print("--")
-#     char2idx, idx2char, vocab_size = preprocess_vocab()
-#     # print(padded_audios[0][1])
-#     print("--")
-#     # print(padded_audios[0][0])
-#     result = Convert(
-#         model, padded_audios[0][1], padded_audios[0][0], char2idx, idx2char, device
-#     )
-#     print(result)
+    model.load_state_dict(torch.load(model_path, weights_only=True))
+    model.to(device)
+    model.eval()
+
+    result = Convert(
+        model, padded_audios[0][1], padded_audios[0][0], char2idx, idx2char, device
+    )
+
+    return result

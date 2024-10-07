@@ -29,7 +29,6 @@ function App() {
   const [recorder, setRecorder] = useState(null); //? The MediaRecorder object
   const [audioBlob, setAudioBlob] = useState(null); //? Store the audio as Blob
 
-
   const [arabicText, setArabicText] = useState(null); //? The Arabic text
   const [englishText, setEnglishText] = useState(null); //? The English text
 
@@ -41,8 +40,11 @@ function App() {
 
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const mediaRecorder = new MediaRecorder(stream);
+
     mediaRecorder.ondataavailable = (event) => {
-      const audioBlob = new Blob([event.data], { type: "audio/wav" });
+      const audioBlob = new Blob([event.data], {
+        type: "audio/wav; codecs=MS_PCM",
+      });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudioURL(audioUrl);
       setAudioBlob(audioBlob);
@@ -60,34 +62,50 @@ function App() {
   const sendAudioToAPI = async () => {
     if (!audioBlob) return;
 
-    setTimeout(() => {
-      setAsrResult(
-        "انا اسمى مروان محمد عبد المجيد وفى كليه هندسه وجامد موت  واديلو كفته ونفسى اخد اجازه عشان انا زقهت الصراحه ف حد يساعدنى بسرعه بالله عليكوا عشان مش قادر استحمل اكتر من كده "
-      );
-    }, 2000);
+    console.log(audioBlob);
+    const formData = new FormData();
+    formData.append("file", audioBlob, "recording.wav"); // Append the Blob as a file
+    try {
+      const response = await fetch("http://127.0.0.1:8000/audio2text", {
+        method: "POST",
+        body: formData,
+      });
 
-    // const formData = new FormData();
-    // formData.append("file", audioBlob, "recording.wav"); // Append the Blob as a file
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        setAsrResult(result.text);
+        setAudioURL(null);
+        setAudioBlob(null);
+      }
+      setSpeech2Text(false);
+    } catch (error) {
+      console.error("Error sending audio:", error);
+    }
+  };
 
-    // try {
-    //   const response = await fetch("YOUR_API_ENDPOINT", {
-    //     method: "POST",
-    //     body: formData,
-    //     headers: {
-    //       contentType: "multipart/form-data",
-    //     },
-    //   });
+  const sendTextToAPI = async () => {
+    if (!arabicText) return;
+    console.log(JSON.stringify({ text: arabicText }));
+    try {
+      const response = await fetch("http://127.0.0.1:8000/translate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: arabicText }),
+      });
 
-    //   if (response.ok) {
-    //     console.log("Audio uploaded successfully!");
-    //     const result = await response.json();
-    //     setAsrResult(result.transcription);
-    //   } else {
-    //     console.error("Failed to upload audio");
-    //   }
-    // } catch (error) {
-    //   console.error("Error sending audio:", error);
-    // }
+      if (response.ok) {
+        console.log("Text translated successfully!");
+        const result = await response.json();
+        setEnglishText(result.translation);
+      } else {
+        console.error("Failed to upload audio");
+      }
+    } catch (error) {
+      console.error("Error sending audio:", error);
+    }
   };
 
   useEffect(() => {
@@ -197,15 +215,10 @@ function App() {
   };
 
   const handelBackButton = () => {
-    if (asrActive) {
-      setAsrActive(false);
-    }
-    if (translationActive) {
-      setTranslationActive(false);
-    }
+    setAsrActive(false);
+    setTranslationActive(false);
+    setEnglishText("");
   };
-
-  const uploadAudioFile = () => {};
 
   const backButton = (colorClassName) => {
     return (
@@ -267,7 +280,7 @@ function App() {
             <div className="asr">
               {!isRecording && (
                 <>
-                  <button className={` button `} onClick={uploadAudioFile}>
+                  <button className={` button `}>
                     <input
                       className="audio-input"
                       type="file"
@@ -276,14 +289,16 @@ function App() {
                         const file = e.target.files[0];
                         if (file) {
                           // Create a Blob from the selected file
-                          const blob = new Blob([file], { type: file.type });
+                          const blob = new Blob([file], { type: "audio/wav" });
                           console.log(blob);
                           setAudioBlob(blob);
 
                           // Create a Blob URL for the audio file
                           const fileURL = URL.createObjectURL(blob);
                           setAudioURL(fileURL);
+                          setAsrResult(null);
                         }
+                        e.target.value = null; // Reset the input value
                       }}
                     />
                     <svg className="svgIcon" viewBox="0 0 384 512">
@@ -367,16 +382,7 @@ function App() {
                   delay: 90, // Lower delay for faster typing
                 }}
                 onInit={(typewriter) => {
-                  typewriter
-                    .typeString(asrResult)
-                    .callFunction(() => {
-                      console.log("String typed out!");
-                    })
-                    .pauseFor(2500)
-                    .callFunction(() => {
-                      console.log("All strings were deleted");
-                    })
-                    .start();
+                  typewriter.typeString(asrResult).pauseFor(2500).start();
                 }}
               />
             </div>
@@ -384,7 +390,7 @@ function App() {
 
           {/* //? Display the audio player if the audio is recorded and the ASR is active */}
 
-          {audioURL && asrActive && !speech2text && (
+          {asrActive && audioURL && !speech2text && (
             <div>
               <audio src={audioURL} controls />
             </div>
@@ -397,6 +403,7 @@ function App() {
                 <textarea
                   name="arabic"
                   id="arabic"
+                  dir="rtl"
                   //? Allow Arabic characters, numbers, and punctuation
                   onInput={(e) => {
                     const value = e.target.value;
@@ -414,7 +421,12 @@ function App() {
 
               <div className="english-section">
                 <div className="english-title">{`English`}</div>
-                <textarea readOnly name="english" id="english" value={englishText}></textarea>
+                <textarea
+                  readOnly
+                  name="english"
+                  id="english"
+                  value={englishText}
+                ></textarea>
               </div>
             </div>
           )}
@@ -425,7 +437,7 @@ function App() {
                 <div
                   className="button-container"
                   onClick={() => {
-                    if (audioBlob) {
+                    if (audioBlob && asrActive) {
                       setSpeech2Text(true);
                       sendAudioToAPI();
                     } else setSpeech2Text(false);
@@ -459,6 +471,9 @@ function App() {
                   ref={translationButtonRef}
                   className="button translation"
                   onClick={() => {
+                    if (translationActive && arabicText) {
+                      sendTextToAPI();
+                    }
                     setTranslationActive(true);
                   }}
                 >

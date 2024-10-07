@@ -443,5 +443,6 @@ audio::-webkit-media-controls-mute-button {
   width: 140px;
   height: 50px;
   opacity: 0;
+  cursor: pointer;
 }
 

@@ -8,10 +8,9 @@ from fastapi import (
 )
 from openai import OpenAI
 import dotenv
-from io import BytesIO
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from pydub import AudioSegment
+
 
 from utils import *
 import tempfile

@@ -6,3 +6,4 @@ torch~=2.4.1
 uvicorn~=0.31.0
 python-multipart~=0.0.12
 pydantic~=2.8.2
+librosa~=0.10.2.post1

@@ -8,6 +8,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
+
 }
 
 * {
@@ -23,7 +24,15 @@
 body {
   background-color: rgb(0, 0, 0);
   overflow-x: hidden;
+  position: relative;
+  z-index: -3;
 }
+
+#root{
+  position: relative;
+  z-index: -3;
+}
+
 a {
   text-decoration: none;
 }
@@ -35,7 +44,6 @@ svg {
   display: none;
 }
 
-
 .container {
   max-width: 1536px;
   margin-bottom: 60px;
@@ -44,7 +52,6 @@ svg {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
-
 
 /* 2xl */
 @media (max-width: 1536px) {
@@ -72,10 +79,6 @@ svg {
   .container {
     max-width: 640px;
   }
-  body::-webkit-scrollbar {
-   display: none ;
-  }
-   
 }
 
 /* sm */

@@ -239,10 +239,10 @@ function App() {
   return (
     <>
       <div className="main">
-        {clef(playNote)} {musicNote(playNote)} <div className="light-1"></div>{" "}
+        {clef(playNote)} {musicNote(playNote)} 
         <img src={Phonograph} className="phonograph" alt="Group Icon" />
         <img src={Stick} className="stick" alt="Group Icon" />
-        <div className="light-2"></div>{" "}
+        <div className="light-2"></div>
         <div className="content">
           <div className="header">
             <img
@@ -308,7 +308,7 @@ function App() {
                 </>
               )}
 
-              <div className="recording">
+              {/* <div className="recording">
                 <div className={`circle1 ${isRecording ? "pulse1" : ""}`}></div>
                 <div className={`circle2 ${isRecording ? "pulse2" : ""}`}></div>
                 <div
@@ -355,7 +355,7 @@ function App() {
                     </g>
                   </svg>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
 

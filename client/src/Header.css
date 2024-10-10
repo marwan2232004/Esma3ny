@@ -1,0 +1,100 @@
+.navbar {
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  position: relative;
+  z-index: 1000;
+
+  width: 100vw;
+  height: 150px;
+}
+
+.org {
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  width: 30px;
+  height: 30px;
+
+  opacity: 0.7;
+  cursor: pointer;
+  user-select: none;
+}
+
+.icon {
+  margin: 0;
+  margin-left: auto;
+  cursor: pointer;
+}
+.Btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  /* overflow: hidden; */
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  cursor: pointer;
+}
+
+.svgContainer svg {
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+path {
+  cursor: pointer;
+}
+
+.svgContainer {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  backdrop-filter: blur(0px);
+  letter-spacing: 0.8px;
+  border-radius: 10px;
+  transition: all 0.3s;
+  border: 1px solid rgba(156, 156, 156, 0.466);
+}
+
+.BG {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #f547db;
+  z-index: -1;
+  border-radius: 10px;
+  pointer-events: none;
+  transition: all 0.3s;
+}
+
+.org:hover {
+  opacity: 1;
+}
+.org:hover .BG {
+  transform: rotate(35deg);
+  transform-origin: bottom;
+}
+
+.org:hover .svgContainer {
+  background-color: rgba(156, 156, 156, 0.466);
+  backdrop-filter: blur(4px);
+}

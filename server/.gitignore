@@ -8,7 +8,7 @@ Test Arabic.mp3
 test_main.http
 # C extensions
 *.so
-
+*.pth
 # Distribution / packaging
 .Python
 build/

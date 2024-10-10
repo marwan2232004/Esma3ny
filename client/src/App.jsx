@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import * as Tone from "tone";
 import Typewriter from "typewriter-effect";
 import "./App.css";
@@ -7,6 +7,7 @@ import Phonograph from "./assets/Group2.svg";
 import { clef, maracas, musicNote, pen } from "./assets/svg";
 import "./Buttons.css";
 import CursorAnimation from "./CursorAnimation";
+import "./Header.css";
 import "./loader.css";
 import "./Translation.css";
 
@@ -25,39 +26,10 @@ function App() {
   const backwardMove = useRef(false); //? boolean to check if the backward animation is running
 
   const [audioURL, setAudioURL] = useState(""); //? The URL of the recorded audio
-  const [isRecording, setIsRecording] = useState(false); //? Check if the recording is active
-  const [recorder, setRecorder] = useState(null); //? The MediaRecorder object
   const [audioBlob, setAudioBlob] = useState(null); //? Store the audio as Blob
 
   const [arabicText, setArabicText] = useState(null); //? The Arabic text
   const [englishText, setEnglishText] = useState(null); //? The English text
-
-  const startRecording = async () => {
-    setAsrResult(null);
-    setAudioURL(null);
-    setAudioBlob(null);
-    setSpeech2Text(false);
-
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new MediaRecorder(stream);
-
-    mediaRecorder.ondataavailable = (event) => {
-      const audioBlob = new Blob([event.data], {
-        type: "audio/wav; codecs=MS_PCM",
-      });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudioURL(audioUrl);
-      setAudioBlob(audioBlob);
-    };
-    mediaRecorder.start();
-    setRecorder(mediaRecorder);
-    setIsRecording(true);
-  };
-
-  const stopRecording = () => {
-    recorder.stop();
-    setIsRecording(false);
-  };
 
   const sendAudioToAPI = async () => {
     if (!audioBlob) return;
@@ -107,15 +79,6 @@ function App() {
       console.error("Error sending audio:", error);
     }
   };
-
-  useEffect(() => {
-    // Clean up: stop the recorder if the component is unmounted
-    return () => {
-      if (recorder) {
-        recorder.stream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [recorder]);
 
   const enterAnimation = () => {
     //? To prevent the animation from running multiple times
@@ -202,7 +165,6 @@ function App() {
         sampler.triggerAttackRelease([note], 0.5);
       },
     }).toDestination();
-    // sampler.triggerAttackRelease(note, "8n");
   };
 
   // Function to start the Tone.js audio context
@@ -239,10 +201,28 @@ function App() {
   return (
     <>
       <div className="main">
-        {clef(playNote)} {musicNote(playNote)} 
+        {clef(playNote)} {musicNote(playNote)}
         <img src={Phonograph} className="phonograph" alt="Group Icon" />
         <img src={Stick} className="stick" alt="Group Icon" />
         <div className="light-2"></div>
+        <div className={`navbar`}>
+          <a
+            className="org"
+            href="https://github.com/marwan2232004"
+            target="_blank noreferrer"
+          >
+            <div className="icon">
+              <button className="Btn">
+                <span className="svgContainer">
+                  <svg fill="white" viewBox="0 0 496 512">
+                    <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+                  </svg>
+                </span>
+                <span className="BG"></span>
+              </button>
+            </div>
+          </a>
+        </div>
         <div className="content">
           <div className="header">
             <img
@@ -278,7 +258,7 @@ function App() {
 
           {asrActive && (
             <div className="asr">
-              {!isRecording && (
+              {
                 <>
                   <button className={` button `}>
                     <input
@@ -306,56 +286,7 @@ function App() {
                     </svg>
                   </button>
                 </>
-              )}
-
-              {/* <div className="recording">
-                <div className={`circle1 ${isRecording ? "pulse1" : ""}`}></div>
-                <div className={`circle2 ${isRecording ? "pulse2" : ""}`}></div>
-                <div
-                  className={`mic ${isRecording ? "pulse3" : ""}`}
-                  onClick={isRecording ? stopRecording : startRecording}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="-0.5 -0.5 16 16"
-                    id="Stop-Fill--Streamline-Mingcute-Fill"
-                    height={16}
-                    width={16}
-                    className={isRecording ? "" : "hide"}
-                  >
-                    <desc>
-                      {"Stop Fill Streamline Icon: https://streamlinehq.com"}
-                    </desc>
-                    <g fill="none" fillRule="evenodd">
-                      <path
-                        fill="#ffffff"
-                        d="M2.5 3.75a1.25 1.25 0 0 1 1.25 -1.25h7.5a1.25 1.25 0 0 1 1.25 1.25v7.5a1.25 1.25 0 0 1 -1.25 1.25H3.75a1.25 1.25 0 0 1 -1.25 -1.25V3.75Z"
-                        strokeWidth={1}
-                      />
-                    </g>
-                  </svg>
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="-0.5 -0.5 16 16"
-                    id="Mic-Fill--Streamline-Mingcute-Fill"
-                    height={16}
-                    width={16}
-                    className={!isRecording ? "" : "hide"}
-                  >
-                    <desc>
-                      {"Mic Fill Streamline Icon: https://streamlinehq.com"}
-                    </desc>
-                    <g fill="none" fillRule="nonzero">
-                      <path
-                        fill="#ffffff"
-                        d="M11.91875 7.50625a0.625 0.625 0 0 1 0.53125 0.7074999999999999A5.0024999999999995 5.0024999999999995 0 0 1 8.125 12.46125V13.125a0.625 0.625 0 1 1 -1.25 0v-0.6637500000000001a5.003125000000001 5.003125000000001 0 0 1 -4.324375 -4.2475000000000005 0.625 0.625 0 0 1 1.2375 -0.1775 3.7506250000000003 3.7506250000000003 0 0 0 7.42375 0 0.625 0.625 0 0 1 0.7074999999999999 -0.53ZM7.5 1.25a3.125 3.125 0 0 1 3.125 3.125v3.125a3.125 3.125 0 0 1 -6.25 0V4.375a3.125 3.125 0 0 1 3.125 -3.125Z"
-                        strokeWidth={1}
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div> */}
+              }
             </div>
           )}
 

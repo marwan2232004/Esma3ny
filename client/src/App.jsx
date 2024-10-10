@@ -227,19 +227,11 @@ function App() {
           <div className="header">
             <img
               className="small-image hafz"
-              src="./src/assets/abd elhaleem hafz.jpg"
+              src="/abd elhaleem hafz.jpg"
               alt=""
             />
-            <img
-              className="small-image faried"
-              src="./src/assets/faried.jpg"
-              alt=""
-            />
-            <img
-              className="small-image big-boss"
-              src="./src/assets/big boss.jpg"
-              alt=""
-            />
+            <img className="small-image faried" src="/faried.jpg" alt="" />
+            <img className="small-image big-boss" src="/big boss.jpg" alt="" />
             <div className="name">أسمعنى</div>
           </div>
 
@@ -375,16 +367,8 @@ function App() {
                     setAsrActive(true);
                   }}
                 >
-                  <img
-                    className="drum-png"
-                    src="./src/assets/drum.png"
-                    alt=""
-                  />
-                  <img
-                    className="trumpet-png"
-                    src="./src/assets/trumpet.png"
-                    alt=""
-                  />
+                  <img className="drum-png" src="/drum.png" alt="" />
+                  <img className="trumpet-png" src="/trumpet.png" alt="" />
                   {maracas}
                   <button className="button speak">
                     {!asrActive ? "تحدث" : "تحويل"}

@@ -222,11 +222,12 @@ class Transformer(nn.Module):
                  ffn_hidden,
                  num_heads,
                  drop_prob,
-                 num_layers
+                 num_encoder_layers,
+                 num_decoder_layers
                  ):
         super().__init__()
-        self.encoder = Encoder(d_model, ffn_hidden, num_heads, drop_prob, num_layers)
-        self.decoder = Decoder(d_model, ffn_hidden, num_heads, drop_prob, num_layers)
+        self.encoder = Encoder(d_model, ffn_hidden, num_heads, drop_prob, num_encoder_layers)
+        self.decoder = Decoder(d_model, ffn_hidden, num_heads, drop_prob, num_decoder_layers)
         self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     def forward(self,
@@ -236,5 +237,5 @@ class Transformer(nn.Module):
                 decoder_self_attention_mask=None,
                 decoder_cross_attention_mask=None):
         src = self.encoder(src, encoder_self_attention_mask)
-        out = self.decoder(tgt, src, decoder_self_attention_mask, decoder_cross_attention_mask)
+        out = self.decoder(tgt,src, decoder_self_attention_mask, decoder_cross_attention_mask)
         return out

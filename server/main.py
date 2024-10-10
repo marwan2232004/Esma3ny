@@ -11,8 +11,8 @@ import dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from Inference import predict
 
-from utils import *
 import tempfile
 import os
 

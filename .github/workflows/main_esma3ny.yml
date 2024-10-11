@@ -32,7 +32,7 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           cd ..
-          zip release.zip ./server/* -r  # Zip everything inside the 'server' folder
+          zip -r release.zip server  # Recursively zip the server folder
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4

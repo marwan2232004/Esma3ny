@@ -57,10 +57,16 @@ class TranslationRequest(BaseModel):
     text: str
 
 
-@app.post("/translate")
+@app.post("/translate/auto")
 async def translate(request: TranslationRequest):
     response = get_translate(request.text)
     return {"translation": response}
+
+
+@app.post("/translate/en")
+async def translate(request: TranslationRequest):
+    # response = get_translate(request.text)
+    return {"translation": "ليس بعد"}
 
 
 @app.post("/audio2text")
@@ -74,7 +80,7 @@ async def upload_audio(file: UploadFile = File(...)):
 
     # Create a temporary file in the current working directory
     with tempfile.NamedTemporaryFile(
-        dir=current_dir, delete=False, suffix=".wav"
+            dir=current_dir, delete=False, suffix=".wav"
     ) as tmp_file:
         tmp_file.write(contents)
         tmp_file_path = tmp_file.name  # Get the path of the temp file

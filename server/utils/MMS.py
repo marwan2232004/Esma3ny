@@ -123,7 +123,7 @@ def generate_padding_masks(
     )
 
 
-def Convert(model, audio, org_len, char2idx, idx2char, device):
+def greedyDecoder(model, audio, org_len, char2idx, idx2char, device):
     with torch.no_grad():
         transcription = ""
 

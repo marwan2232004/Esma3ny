@@ -1,12 +1,6 @@
-# from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 import requests
-
-# model = MBartForConditionalGeneration.from_pretrained(
-#     "facebook/mbart-large-50-many-to-many-mmt"
-# )
-# tokenizer = MBart50TokenizerFast.from_pretrained(
-#     "facebook/mbart-large-50-many-to-many-mmt"
-# )
+import sys
+import io
 
 
 def get_translate(article_ar):
@@ -23,4 +17,5 @@ def get_translate(article_ar):
     return response.json()["translatedText"]
 
 
-print(get_translate("Hello mohamed I want to go kitchen and eating chicken with your mom"))
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+# print(get_translate("Hello mohamed I want to go kitchen and eating chicken with your mom"))

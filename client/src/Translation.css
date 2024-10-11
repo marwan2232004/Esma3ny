@@ -40,12 +40,12 @@ textarea::placeholder {
 
 .english-section textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 135, 167, 0.911);
-
+  box-shadow: 0 0 0 2px #ff87a7e8;
   border: 2px solid rgb(255, 180, 198);
 }
 
-.english-section:focus-within .english-title {
+.english-section textarea:focus ~ .english-header .english-title,
+.english-section textarea:focus + .english-header .english-title {
   color: rgb(255, 180, 208);
 }
 
@@ -64,6 +64,18 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+
+.english-section{
+  flex-direction: column-reverse;
+}
+
+.english-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .arabic-title {

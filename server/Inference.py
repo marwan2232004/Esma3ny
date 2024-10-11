@@ -1,7 +1,7 @@
 import numpy as np
 from utils.Audio_Processing import preprocess_audio
 from utils.Constants import *
-from utils.MMS import get_device, MMS, Convert
+from utils.MMS import get_device, MMS, greedyDecoder
 from utils.NLP import preprocess_vocab
 import torch
 
@@ -51,7 +51,7 @@ def predict(audio_file):
     model.to(device)
     model.eval()
 
-    result = Convert(
+    result = greedyDecoder(
         model, padded_audios[0][1], padded_audios[0][0], char2idx, idx2char, device
     )
 

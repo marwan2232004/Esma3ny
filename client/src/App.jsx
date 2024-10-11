@@ -9,6 +9,7 @@ import "./Buttons.css";
 import CursorAnimation from "./CursorAnimation";
 import "./Header.css";
 import "./loader.css";
+import "./MagicButton.css";
 import "./Translation.css";
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
 
   const [arabicText, setArabicText] = useState(null); //? The Arabic text
   const [englishText, setEnglishText] = useState(null); //? The English text
-
+  const [translationTitle, setTranslationTitle] = useState("English"); //? The title of the translation section
+  const [isChecked, setIsChecked] = useState(false);
   const sendAudioToAPI = async () => {
     if (!audioBlob) return;
 
@@ -57,21 +59,21 @@ function App() {
   };
 
   const sendTextToAPI = async () => {
-    if (!arabicText) return;
-    console.log(JSON.stringify({ text: arabicText }));
+    if (!englishText) return;
+    const endpoint = isChecked ? "translate/auto" : "translate/en";
     try {
-      const response = await fetch("http://127.0.0.1:8000/translate", {
+      const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: arabicText }),
+        body: JSON.stringify({ text: englishText }),
       });
 
       if (response.ok) {
         console.log("Text translated successfully!");
         const result = await response.json();
-        setEnglishText(result.translation);
+        setArabicText(result.translation);
       } else {
         console.error("Failed to upload audio");
       }
@@ -198,6 +200,12 @@ function App() {
     );
   };
 
+  const handleCheckboxChange = (event) => {
+    const checked = event.target.checked;
+    setIsChecked(checked);
+    setTranslationTitle(checked ? "Auto Detection" : "English");
+  };
+
   return (
     <>
       <div className="main">
@@ -321,34 +329,44 @@ function App() {
 
           {translationActive && (
             <div className="translation-section">
-              <div className="arabic-section">
-                <div className="arabic-title">{`عربى`}</div>
-                <textarea
-                  name="arabic"
-                  id="arabic"
-                  dir="rtl"
-                  //? Allow Arabic characters, numbers, and punctuation
-                  onInput={(e) => {
-                    const value = e.target.value;
-                    const arabicRegex = /^[\u0600-\u06FF0-9\s.,;:?!،؛؟]*$/;
-                    if (!arabicRegex.test(value)) {
-                      e.target.value = value.replace(
-                        /[^\u0600-\u06FF0-9\s.,;:?!،؛؟]/g,
-                        ""
-                      );
-                    }
-                    setArabicText(e.target.value);
-                  }}
-                ></textarea>
-              </div>
-
               <div className="english-section">
-                <div className="english-title">{`English`}</div>
                 <textarea
-                  readOnly
                   name="english"
                   id="english"
                   value={englishText}
+                  onInput={(e) => {
+                    let value = e.target.value;
+                    if (!isChecked) {
+                      // Allow only English letters, punctuation, and numbers
+                      value = value.replace(/[^a-zA-Z0-9.,!?;:'"()\- ]/g, "");
+                    }
+                    setEnglishText(value);
+                  }}
+                ></textarea>
+                <div className="english-header">
+                  <div className="english-title">{translationTitle}</div>
+                  <div className="checkbox-wrapper-5">
+                    <div className="check">
+                      <input
+                        checked={isChecked}
+                        id="check-5"
+                        type="checkbox"
+                        onChange={handleCheckboxChange}
+                      />
+                      <label htmlFor="check-5"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="arabic-section">
+                <div className="arabic-title">{`عربى`}</div>
+                <textarea
+                  readOnly
+                  name="arabic"
+                  id="arabic"
+                  dir="rtl"
+                  value={arabicText}
                 ></textarea>
               </div>
             </div>
@@ -386,7 +404,7 @@ function App() {
                   ref={translationButtonRef}
                   className="button translation"
                   onClick={() => {
-                    if (translationActive && arabicText) {
+                    if (translationActive && englishText) {
                       sendTextToAPI();
                     }
                     setTranslationActive(true);

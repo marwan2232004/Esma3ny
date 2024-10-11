@@ -8,7 +8,7 @@ from utils.NLP import TextDecoder, tokenize_text
 def get_device():
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     print(f"Using device: {device}")
-    return device
+    return torch.device("cpu")
 
 
 def get_conv_Lout(L_in, conv):

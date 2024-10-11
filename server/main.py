@@ -15,12 +15,13 @@ from Inference import predict
 
 import tempfile
 import os
+from utils.Translation import get_translate
 
 dotenv.load_dotenv()
 app = FastAPI()
 client = OpenAI()
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # Add CORS middleware
 app.add_middleware(
@@ -58,8 +59,8 @@ class TranslationRequest(BaseModel):
 
 @app.post("/translate")
 async def translate(request: TranslationRequest):
-    print(request.text)
-    return {"translation": "hello my bbooooooy"}
+    response = get_translate(request.text)
+    return {"translation": response}
 
 
 @app.post("/audio2text")
@@ -72,7 +73,9 @@ async def upload_audio(file: UploadFile = File(...)):
     print(current_dir, flush=True)
 
     # Create a temporary file in the current working directory
-    with tempfile.NamedTemporaryFile(dir=current_dir, delete=False, suffix=".wav") as tmp_file:
+    with tempfile.NamedTemporaryFile(
+        dir=current_dir, delete=False, suffix=".wav"
+    ) as tmp_file:
         tmp_file.write(contents)
         tmp_file_path = tmp_file.name  # Get the path of the temp file
 

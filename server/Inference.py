@@ -8,7 +8,7 @@ import torch
 ############################################################################################
 
 
-model_path = "./ASR_2_1_210.pth"
+model_path = "./ASR_2_1_220.pth"
 
 
 ############################################################################################
@@ -36,14 +36,16 @@ def predict(audio_file):
 
     # load model
 
-    model = MMS(vocab_size=vocab_size,
-                max_encoder_seq_len=math.ceil(N_FRAMES / 2),
-                max_decoder_seq_len=MAX_SEQ_LEN,
-                num_encoder_layers=2,
-                num_decoder_layers=1,
-                d_model=512,
-                nhead=8,
-                dim_feedforward=2048)
+    model = MMS(
+        vocab_size=vocab_size,
+        max_encoder_seq_len=math.ceil(N_FRAMES / 2),
+        max_decoder_seq_len=MAX_SEQ_LEN,
+        num_encoder_layers=2,
+        num_decoder_layers=1,
+        d_model=512,
+        nhead=8,
+        dim_feedforward=2048,
+    )
 
     model.load_state_dict(torch.load(model_path, weights_only=True))
     model.to(device)

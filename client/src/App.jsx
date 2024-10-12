@@ -31,19 +31,23 @@ function App() {
 
   const [arabicText, setArabicText] = useState(null); //? The Arabic text
   const [englishText, setEnglishText] = useState(null); //? The English text
-  const [translationTitle, setTranslationTitle] = useState("English"); //? The title of the translation section
+  const [translationTitle, setTranslationTitle] = useState("عربى"); //? The title of the translation section
+  const [targetLanguage, setTargetLanguage] = useState("English"); //? The target language for translation
   const [isChecked, setIsChecked] = useState(false);
+  const [audioContextStarted, setAudioContextStarted] = useState(false);
   const sendAudioToAPI = async () => {
     if (!audioBlob) return;
 
-    console.log(audioBlob);
     const formData = new FormData();
     formData.append("file", audioBlob, "recording.wav"); // Append the Blob as a file
     try {
-      const response = await fetch("http://127.0.0.1:8000/audio2text", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://esma3ny-h0brbqfthpgpdkd4.uaenorth-01.azurewebsites.net/audio2text",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
@@ -62,13 +66,16 @@ function App() {
     if (!englishText) return;
     const endpoint = isChecked ? "translate/auto" : "translate/en";
     try {
-      const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: englishText }),
-      });
+      const response = await fetch(
+        `https://esma3ny-h0brbqfthpgpdkd4.uaenorth-01.azurewebsites.net/${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: englishText }),
+        }
+      );
 
       if (response.ok) {
         console.log("Text translated successfully!");
@@ -153,7 +160,6 @@ function App() {
       }
     }, 800);
   };
-  const [audioContextStarted, setAudioContextStarted] = useState(false);
 
   const playNote = (note) => {
     startAudioContext();
@@ -203,7 +209,8 @@ function App() {
   const handleCheckboxChange = (event) => {
     const checked = event.target.checked;
     setIsChecked(checked);
-    setTranslationTitle(checked ? "Auto Detection" : "English");
+    setTranslationTitle(checked ? "Auto Detection" : "عربى");
+    setTargetLanguage(checked ? "عربى" : "English");
   };
 
   return (
@@ -331,14 +338,15 @@ function App() {
             <div className="translation-section">
               <div className="english-section">
                 <textarea
-                  name="english"
-                  id="english"
                   value={englishText}
+                  dir={isChecked ? "ltr" : "rtl"}
                   onInput={(e) => {
                     let value = e.target.value;
                     if (!isChecked) {
-                      // Allow only English letters, punctuation, and numbers
-                      value = value.replace(/[^a-zA-Z0-9.,!?;:'"()\- ]/g, "");
+                      value = value.replace(
+                        /[^\u0600-\u06FF0-9\s.,;:?!،؛؟]/g,
+                        ""
+                      );
                     }
                     setEnglishText(value);
                   }}
@@ -360,7 +368,7 @@ function App() {
               </div>
 
               <div className="arabic-section">
-                <div className="arabic-title">{`عربى`}</div>
+                <div className="arabic-title">{targetLanguage}</div>
                 <textarea
                   readOnly
                   name="arabic"

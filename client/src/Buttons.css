@@ -43,6 +43,7 @@
   -moz-box-shadow: 0px 0px 24px -5px var(--translate-color);
   box-shadow: 0px 0px 24px -5px var(--translate-color);
   transition: all 0.5s ease-in-out;
+  cursor: pointer;
 }
 
 .translation:hover {
@@ -111,6 +112,7 @@
   box-shadow: 0px 0px 24px -5px var(--speaking-color);
   transition: all 0.5s ease-in-out;
   border: none;
+  cursor: pointer;
 }
 
 .speak:hover {
@@ -418,6 +420,11 @@ audio::-webkit-media-controls-mute-button {
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  cursor: pointer;
+}
+
+.group span{
+  cursor: pointer;
 }
 
 .asr-back-color {

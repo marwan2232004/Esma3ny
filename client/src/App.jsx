@@ -42,7 +42,7 @@ function App() {
     formData.append("file", audioBlob, "recording.wav"); // Append the Blob as a file
     try {
       const response = await fetch(
-        "http://74.249.184.185/audio2text",
+        "https://74.249.184.185/audio2text",
         {
           method: "POST",
           body: formData,
@@ -67,7 +67,7 @@ function App() {
     const endpoint = isChecked ? "translate/auto" : "translate/en";
     try {
       const response = await fetch(
-        `http://74.249.184.185/${endpoint}`,
+        `https://74.249.184.185/${endpoint}`,
         {
           method: "POST",
           headers: {

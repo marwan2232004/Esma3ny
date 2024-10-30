@@ -70,19 +70,21 @@ textarea::placeholder {
   flex-direction: column-reverse;
 }
 
-.english-header{
+.english-header,.arabic-header{
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
+
 
 .arabic-title {
   font-size: 1.5em;
   color: white;
-  align-self: self-end;
-  margin-right: 10px;
 }
 
 .english-title {

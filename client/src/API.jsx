@@ -25,7 +25,7 @@ const sendAudio = async ({ audioBlob, setResult }) => {
 
 const sendText = async ({ englishText, isChecked, setResult }) => {
   if (!englishText) return;
-  const endpoint = isChecked ? "translate/auto" : "translate/en";
+  const endpoint = isChecked ? "translate/auto" : "translate/en-ar";
   try {
     const response = await fetch(BASE_API_URL + `${endpoint}`, {
       method: "POST",

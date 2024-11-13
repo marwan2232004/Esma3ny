@@ -37,4 +37,12 @@ Follow these steps to run the frontend locally:
    ```bash
    npm run dev
    ```   
+## 🎥 Demo Video
+
+Watch the demo video to see the ASR and Translation API in action:
+
+
+
+https://github.com/user-attachments/assets/09424af2-5e7d-48d6-89ff-bc8dc0f34a96
+
 

@@ -4,6 +4,8 @@ Welcome to the **Esma3ny** frontend repository! This is the React Vite-powered w
 
 The project is deployed on **Netlify** for seamless access 🌐.
 
+Frontend repository: [Esma3ny Frontend Repository](https://github.com/marwan2232004/Esma3ny)
+
 ---
 
 ### 🚀 Features

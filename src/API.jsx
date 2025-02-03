@@ -1,4 +1,4 @@
-const BASE_API_URL = "http://127.0.0.1:8000";
+const BASE_API_URL = "http://127.0.0.1:8000/";
 
 const sendAudio = async ({ audioBlob, setResult }) => {
   if (!audioBlob) return;
@@ -6,7 +6,7 @@ const sendAudio = async ({ audioBlob, setResult }) => {
   const formData = new FormData();
   formData.append("file", audioBlob, "recording.wav"); // Append the Blob as a file
   try {
-    const response = await fetch(BASE_API_URL + "/whisper-asr", {
+    const response = await fetch(BASE_API_URL + "whisper-asr", {
       method: "POST",
       body: formData,
     });
